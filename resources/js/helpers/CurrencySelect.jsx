@@ -1,9 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import FetchFixer from './calls/Fixer';
 
+// eslint-disable-next-line no-unused-vars
+import styles from './CurrencySelect.css';
+
 const Select = (props) => {
   const [isFetching, setIsFetching] = useState(true);
   const [options, setOptions] = useState();
+
   const [isError, setIsError] = useState({
     bool: false,
     message: '',
@@ -35,22 +39,18 @@ const Select = (props) => {
 
   return (
     <>
-      {isFetching && 'Loading data!'}
       {isError.bool && <p>{isError.message}</p>}
-
-      {!isFetching
-
-        && <select {...props}>
-            {options && Object.keys(options).map(key => (
-              <option
-                value={key}
-                key={key}
-              >
-                {options[key]}
-              </option>
-            ))}
-          </select>
-      }
+      <select {...props}>
+        {options && Object.keys(options).map(key => (
+          <option
+            value={key}
+            key={key}
+          >
+            {options[key]}
+          </option>
+        ))}
+      </select>
+      {isFetching && <span>Retrieving currencies</span>}
     </>
   );
 };

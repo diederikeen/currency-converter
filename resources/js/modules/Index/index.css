@@ -1,0 +1,40 @@
+.e-select-wrap {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+
+  @media screen and (min-width: 767px) {
+    flex-direction: row;
+    align-items: flex-end;
+  }
+
+  &__col {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    width: 33%;
+
+    input {
+      margin: 0 0 12px 0;
+    }
+  }
+
+  p {
+    margin: 12px 0;
+    font-style: italic;
+    font-size: 14px;
+    opacity: .50;
+
+    @media screen and (min-width: 767px) {
+      margin: 0 12px;
+      transform: translateY(-50%);
+    } 
+  }
+
+  span {
+    position: absolute;
+    font-size: 14px;
+    margin: 6px 0 0;
+    top: 100%;
+  }
+}

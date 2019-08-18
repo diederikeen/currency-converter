@@ -24,7 +24,8 @@ const FetchFixer = (uriParams, cbSucces, cbError) => {
         return;
       }
       cbSucces(data);
-    });
+    })
+    .catch(error => console.log(error));
 };
 
 export default FetchFixer;

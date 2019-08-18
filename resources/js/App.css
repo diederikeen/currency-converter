@@ -12,6 +12,7 @@ body, html {
 body {
   font-family: 'Open Sans', sans-serif;
   color: #101011;
+  background-color: aliceblue;
 }
 
 h1,h2,h3 {
@@ -34,6 +35,56 @@ a,button {
 p {
   font-size: 16px;
   line-height: 26px;
+}
+
+input {
+  height: 45px;
+  appearance: none;
+  border: none;
+  border-radius: 3px;
+  border: 1px solid #c8c8c8;
+  background: white;
+  font-size: 13px;
+  font-weight: 600;
+  padding: 0 18px;
+  width: 100%;
+
+  &[readOnly] {
+    background: #f2f2f2;
+  }
+}
+
+.m-index {
+  padding: 24px 0 0;
+
+  @media screen and (min-width: 767px) {
+    padding: 48px 0 0;
+  }
+
+  &__result {
+    display: flex;
+    justify-content: flex-end;
+    padding: 12px 0 24px;
+  }
+
+  &__title {
+    font-size: 34px;
+    line-height: 46px;
+    margin: 0 0 12px;
+  }
+
+  &__intro {
+    font-size: 18px;
+    line-height: 26px;
+    margin: 0 0 32px;
+    color: rgba(#101011, .55);
+    @media screen and (min-width: 767px) {
+      margin: 0 0 48px;
+      font-size: 20px;
+      line-height: 32px 0 0;
+      
+    }
+  }
 }
 
 .e-container {
@@ -61,4 +112,16 @@ p {
   &:hover {
     background-color: $primary-color--lighter;
   }
+}
+
+.info {
+  color: $primary-color;
+}
+
+.warning {
+  color: red;
+}
+
+.success {
+  color: green;
 }
