@@ -2,7 +2,7 @@ const path = require('path');
 
 const common = {
   entry: {
-    app: './resources/js/index.js',
+    app: './src/js/index.js',
   },
   output: {
     path: path.resolve(__dirname, '../dist/assets/js'),

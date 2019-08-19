@@ -6,18 +6,8 @@ module.exports = (api) => {
     plugins: [
       [
         '@babel/plugin-proposal-decorators', { legacy: true },
-        '@babel/plugin-proposal-class-properties',
       ],
+      ['@babel/plugin-proposal-class-properties', { loose: true }],
     ],
   };
 };
-
-// {
-//   "plugins": [
-//     [
-//       "@babel/plugin-proposal-decorators", { "legacy": true },
-//       "@babel/plugin-proposal-class-properties"
-//     ]
-//   ],
-//   "presets": ["@babel/preset-env", "@babel/preset-react"],
-// }

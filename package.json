@@ -2,11 +2,11 @@
   "name": "currency-converter",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "src/js/index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "npm-run-all -c -p dev:*",
-    "dev:templates": "html-includes --src ./resources/html --dest ./dist --watch",
+    "dev:templates": "html-includes --src ./src/html --dest ./dist --watch",
     "dev:js": "webpack --config webpack/webpack.config.dev.js",
     "dev:server": "webpack-dev-server --config webpack/webpack.config.dev.js"
   },
