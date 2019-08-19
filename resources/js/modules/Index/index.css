@@ -1,18 +1,108 @@
+.m-index {
+  padding: 24px 0 0;
+
+  @media screen and (min-width: 969px) {
+    padding: 48px 0 0;
+  }
+
+  &__result {
+    display: flex;
+    justify-content: flex-end;
+    padding: 12px 0 24px;
+  }
+
+  &__title {
+    font-size: 34px;
+    line-height: 46px;
+    margin: 0 0 12px;
+  }
+
+  &__intro {
+    font-size: 18px;
+    line-height: 26px;
+    margin: 0 0 32px;
+    color: rgba(#101011, .55);
+   
+    @media screen and (min-width: 969px) {
+      margin: 0 0 48px;
+      font-size: 20px;
+      line-height: 32px 0 0;
+      
+    }
+  }
+
+  &__subtitle {
+    font-weight: 600;
+    font-size: 21px;
+    margin: 0;
+  }
+
+  &__body {
+    margin: 8px 0 18px;
+    font-size: 16px;
+    line-height: 26px;
+    opacity: .5;
+  }
+
+  &__content-wrap {
+    display: flex;    
+    flex-direction: column;
+    padding: 24px 0;
+    /* flex-wrap: wrap; */
+    
+    @media screen and (min-width: 969px) {
+      flex-direction: row;
+      /* justify-content: strech; */
+    }
+  }
+
+  &__aside {
+    margin: 0 0 32px;
+
+    @media screen and (min-width: 969px) {
+      width: 320px;
+      max-width: 320px;
+      /* flex-basis: 320px; */
+      flex-shrink: 0;
+      flex-grow: 1;
+      margin: 0 24px 0 0;
+      align-self: strech;
+    }
+  }
+
+  &__main-content {
+    flex-grow: 1;
+  }
+}
+
+
 .e-select-wrap {
+  width: 100%;
   display: flex;
   align-items: center;
   flex-direction: column;
+  background-color: white;
+  padding: 24px 20px;
+  border-radius: 3px;
+  box-shadow: 0px 3px 12px rgba(#000, .05);
+
 
   @media screen and (min-width: 767px) {
     flex-direction: row;
     align-items: flex-end;
   }
 
+  @media screen and (min-width: 969px) {
+    flex-direction: column;
+    align-items: center;
+    height: 100%;
+  }
+
   &__col {
     position: relative;
     display: flex;
     flex-direction: column;
-    width: 33%;
+    width: 100%;
 
     input {
       margin: 0 0 12px 0;
@@ -28,6 +118,13 @@
     @media screen and (min-width: 767px) {
       margin: 0 12px;
       transform: translateY(-50%);
+      width: 120px;
+      text-align: center;
+    }
+
+    @media screen and (min-width: 969px) {
+      margin: 12 0px;
+      transform: translateY(0);
     } 
   }
 

@@ -54,39 +54,6 @@ input {
   }
 }
 
-.m-index {
-  padding: 24px 0 0;
-
-  @media screen and (min-width: 767px) {
-    padding: 48px 0 0;
-  }
-
-  &__result {
-    display: flex;
-    justify-content: flex-end;
-    padding: 12px 0 24px;
-  }
-
-  &__title {
-    font-size: 34px;
-    line-height: 46px;
-    margin: 0 0 12px;
-  }
-
-  &__intro {
-    font-size: 18px;
-    line-height: 26px;
-    margin: 0 0 32px;
-    color: rgba(#101011, .55);
-    @media screen and (min-width: 767px) {
-      margin: 0 0 48px;
-      font-size: 20px;
-      line-height: 32px 0 0;
-      
-    }
-  }
-}
-
 .e-container {
   width: 95%;
   max-width: 1280px;
