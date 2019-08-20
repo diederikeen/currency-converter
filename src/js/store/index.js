@@ -1,7 +1,7 @@
 import { createContext } from 'react';
 import { format, subDays, differenceInHours } from 'date-fns';
 import { decorate, observable } from 'mobx';
-import FixerCall from '../helpers/calls/fixer';
+import FixerCall from '../helpers/calls/fetchFixer';
 
 function calculateGrowth(historicRate, currentRate) {
   const percentageValue = currentRate - historicRate;
