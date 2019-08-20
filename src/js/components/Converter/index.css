@@ -40,6 +40,25 @@
     }
   }
 
+  &__devider {
+    margin: 12px 0;
+    font-style: italic;
+    font-size: 14px;
+    opacity: .50;
+
+    @media screen and (min-width: 767px) {
+      margin: 0 12px;
+      transform: translateY(-50%);
+      width: 120px;
+      text-align: center;
+    }
+
+    @media screen and (min-width: 969px) {
+      margin: 12 0px;
+      transform: translateY(0);
+    } 
+  }
+
   span {
     position: absolute;
     font-size: 14px;

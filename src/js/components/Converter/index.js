@@ -46,7 +46,7 @@ const Converter = ({
                 options={options}
               />
             </div>
-            <p>— to —</p>
+            <p className="e-select-wrap__devider">— to —</p>
             <div className="e-select-wrap__col">
               <input
                 type="text"
