@@ -1,8 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import Select from './currencySelect';
-import './converter.css';
+import CurrencySelect from '../CurrencySelect';
+import './index.css';
 
 const Converter = ({
   store,
@@ -39,7 +39,7 @@ const Converter = ({
                 onChange={handleInputChange}
                 placeholder={store.amount}
               />
-              <Select
+              <CurrencySelect
                 name="baseCurrency"
                 value={store.baseCurrency}
                 onChange={handleSelectChange}
@@ -54,7 +54,7 @@ const Converter = ({
                 readOnly
                 placeholder={store.targetAmount}
               />
-              <Select
+              <CurrencySelect
                 name="targetCurrency"
                 value={store.targetCurrency}
                 onChange={handleSelectChange}

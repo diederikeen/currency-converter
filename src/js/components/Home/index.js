@@ -1,9 +1,8 @@
 import React, { Component, useContext } from 'react';
 import { observer } from 'mobx-react-lite';
-import { toJS } from 'mobx';
-import Converter from './converter';
-import Tendency from './tendency';
-import Graph from './graph';
+import Converter from '../Converter';
+import Tendency from '../Tendency';
+import LineGraph from '../LineGraph';
 import staticData from './staticData';
 import AppState from '../../store';
 
@@ -44,7 +43,7 @@ const Index = observer(() => {
             />
           </aside>
           <section className="m-index__main-content">
-            <Graph
+            <LineGraph
               data={staticData}
               baseCurrency={store.converter.startCurrency}
               targetCurrency={store.converter.targetCurrency}

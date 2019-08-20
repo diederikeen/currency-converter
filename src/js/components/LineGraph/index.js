@@ -9,8 +9,7 @@ import {
 } from 'recharts';
 import PropTypes from 'prop-types';
 
-// eslint-disable-next-line no-unused-vars
-import Style from './LineGraph.css';
+import './index.css';
 
 
 const LineGraph = ({

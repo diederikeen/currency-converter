@@ -2,7 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { Provider } from 'mobx-react';
 
-import App from './App';
+import App from './components/App';
 import AppStore from './store';
 
 const rootElement = document.getElementById('app');
