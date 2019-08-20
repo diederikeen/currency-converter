@@ -1,8 +1,6 @@
-/* eslint-disable func-names */
-import { observable } from 'mobx';
+import { createContext } from 'react';
 import { format, subDays, differenceInHours } from 'date-fns';
-import { toJS } from 'mobx';
-
+import { decorate, observable } from 'mobx';
 import FixerCall from '../helpers/calls/Fixer';
 
 function calculateGrowth(historicRate, currentRate) {
@@ -10,117 +8,139 @@ function calculateGrowth(historicRate, currentRate) {
   return (percentageValue / historicRate) * 100;
 }
 
-const AppStore = observable({
-  startCurrency: 'EUR',
-  targetCurrency: 'USD',
-  currentRate: 1.1015,
-  historicRate: {
+export class AppState {
+  state = {
+    error: {
+      bool: false,
+      message: null,
+    },
+    isFetching: true,
+  }
+
+  crypto = {
+    bool: false,
+  }
+
+  converter = {
+    baseCurrency: 'EUR',
+    targetCurrency: 'USD',
+    currentRate: 1.1015,
+    amount: 1,
+    targetAmount: 0,
+  }
+
+  timeRange = {
+    dateRangeStart: new Date(),
+    dateRangeEnd: new Date(),
+  }
+
+  historicRate = {
     growth: 0,
     value: 0,
-  },
-  amount: 1,
-  targetAmount: 0,
-  convertToCrypto: false,
-  dateRangeStart: new Date(),
-  dateRangeEnd: new Date(),
-  currencies: {
-    data: {},
-  },
-  isFetching: true,
-  error: {
-    bool: false,
-    message: null,
-  },
-  rates: {
+  };
+
+  rates = {
     lastFetched: Date.now(),
-    rates: {},
-  },
+    data: {},
+  };
+
+  symbols = {};
+
+  initApp = () => {
+    Promise.all([
+      this.fetchSymbols(),
+      this.fetchHistoricalRate(),
+      this.getCurrentRate(),
+    ]);
+    this.convertRate();
+    this.state.isFetching = false;
+  };
+
+  onError = (error) => {
+    console.error(error);
+    this.state.error = {
+      bool: true,
+      message: error.message,
+    };
+  };
+
+  // fetchSymbols
+  fetchSymbols = () => {
+    FixerCall({
+      endpoint: 'symbols',
+    }, this.fetchedSymbols, this.onError);
+  }
+
+  // populate symbols (currencies)
+  fetchedSymbols = (data) => {
+    this.symbols = data.symbols;
+  };
+
+  getCurrentRate = () => {
+    const params = {
+      endpoint: 'latest',
+      base: this.converter.baseCurrency,
+      to: this.converter.targetCurrency,
+    };
+
+    const currentRates = Object.keys(this.rates.data);
+    const lastFetched = differenceInHours(this.rates.lastFetched, Date.now());
+
+    if (currentRates.length > 0 && lastFetched <= 1) {
+      this.fetchedCurrentRates({ rates: this.rates.data });
+    } else {
+      FixerCall(params, this.fetchedCurrentRates, this.onError);
+    }
+  }
+
+  fetchedCurrentRates = ({ rates }) => {
+    this.rates.data = rates;
+    this.setCurrentRate(rates[this.converter.targetCurrency]);
+  };
+
+  setCurrentRate = (value) => {
+    this.converter.currentRate = value;
+    this.convertRate();
+  }
+
+  setAmount = (value) => {
+    this.converter.amount = value;
+    this.convertRate();
+  };
+
+  convertRate = () => {
+    this.converter.targetAmount = parseFloat(Math.floor(this.converter.currentRate * this.converter.amount * 100) / 100).toFixed(2);
+  }
+
+  setCurrency = (name, value) => {
+    this.converter[name] = value;
+    this.setCurrentRate(this.rates.data[this.converter.targetCurrency]);
+  };
+
+  fetchHistoricalRate = (amountOfDays) => {
+    const params = {
+      endpoint: format(subDays(Date.now(), amountOfDays || 30), 'YYYY-MM-DD'),
+      base: this.converter.baseCurrency,
+      symbols: this.converter.targetCurrency,
+    };
+    FixerCall(params, this.fetchedHistoricalRates, this.onError);
+  }
+
+  fetchedHistoricalRates = ({ rates }) => {
+    const rate = Object.values(rates)[0];
+    this.historicRate.amount = rate;
+    this.historicRate.growth = calculateGrowth(rate, this.converter.currentRate);
+  }
+}
+
+decorate(AppState, {
+  state: observable,
+  crypto: observable,
+  converter: observable,
+  timeRange: observable,
+  historicRate: observable,
+  rates: observable,
+  symbols: observable,
 });
 
-AppStore.onFetching = function (bool) {
-  this.isFetching = bool;
-};
-
-AppStore.onError = function (error) {
-  AppStore.error = true;
-};
-
-AppStore.fetchSymbols = function () {
-  FixerCall({
-    endpoint: 'symbols',
-  }, this.fetchedSymbols, this.onError);
-
-  this.convertRate();
-  this.fetchData();
-};
-
-AppStore.fetchedSymbols = function ({ symbols }) {
-  AppStore.currencies.data = symbols;
-  AppStore.fetching = false;
-};
-
-AppStore.setAmount = function (value) {
-  this.amount = value;
-  this.convertRate();
-};
-
-AppStore.setCurrency = function (name, value) {
-  this[name] = value;
-  this.convertRate();
-  this.setCurrentRate(this.rates.rates[this.targetCurrency]);
-};
-
-AppStore.convertRate = function () {
-  this.targetAmount = parseFloat(Math.floor(this.currentRate * this.amount * 100) / 100).toFixed(2);
-};
-
-AppStore.fetchData = () => {
-  Promise.all([
-    AppStore.getCurrentRate(),
-    AppStore.fetchHistoricalRate(),
-  ]);
-};
-
-AppStore.getCurrentRate = function () {
-  const params = {
-    endpoint: 'latest',
-    base: this.startCurrency,
-    to: this.targetCurrency,
-  };
-
-  const currentRates = Object.keys(this.rates.rates);
-  const lastFetched = differenceInHours(this.rates.lastFetched, Date.now());
-
-  if (currentRates.length && lastFetched >= 1) {
-    this.fetchedCurrentRates(this.rates.data);
-  } else {
-    FixerCall(params, this.fetchedCurrentRates, this.onError);
-  }
-};
-
-AppStore.fetchedCurrentRates = function ({ rates }) {
-  AppStore.rates.data = rates;
-  AppStore.setCurrentRate(rates[AppStore.targetCurrency]);
-};
-
-AppStore.setCurrentRate = function (value) {
-  this.currentRate = value;
-  this.convertRate();
-};
-
-AppStore.fetchHistoricalRate = function (amountOfDays) {
-  const params = {
-    endpoint: format(subDays(Date.now(), amountOfDays || 30), 'YYYY-MM-DD'),
-    base: this.startCurrency,
-    symbols: this.targetCurrency,
-  };
-  FixerCall(params, this.fetchedHistoricalRates, this.error);
-};
-
-AppStore.fetchedHistoricalRates = function ({ rates }) {
-  const rate = Object.values(rates)[0];
-  AppStore.historicRate.amount = rate;
-  AppStore.historicRate.growth = calculateGrowth(rate, AppStore.currentRate);
-};
-
-export default AppStore;
+export default createContext(new AppState());

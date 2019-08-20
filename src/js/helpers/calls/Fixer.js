@@ -19,7 +19,7 @@ const FetchFixer = (uriParams, cbSucces, cbError) => {
 
   return new Promise((resolve, reject) => {
     fetch(uri, { method: 'get' })
-      .then(res => res.json())
+      .then((res) => res.json())
       .then((data) => {
         if (!data.success) {
           cbError(data.error);
@@ -28,7 +28,7 @@ const FetchFixer = (uriParams, cbSucces, cbError) => {
         resolve(data);
         cbSucces(data);
       })
-      .catch(error => {
+      .catch((error) => {
         reject(error);
         cbError(error);
       });

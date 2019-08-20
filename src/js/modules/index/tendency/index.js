@@ -5,43 +5,46 @@ import PropTypes from 'prop-types';
 
 import './Tendency.css';
 
-@inject('store')
-@observer
-class Tendency extends Component {
-  render() {
-    const { store } = this.props;
-    return (
-      <>
-        {store.historicRate.growth && store.currentRate
+const Tendency = ({ historicRate, converter, error }) => (
+  <>
+    {historicRate.growth
 
-          ? <section className={`m-tendency ${store.historicRate.growth > 1 ? 'm-tendency--succes' : 'm-tendency--warning'}`}>
-              <h3 className="m-tendency__title">Course {store.startCurrency} / {store.targetCurrency} over 30 days</h3>
-              <span className="m-tendency__current-rate">{store.historicRate.amount} / <span>{store.currentRate.toFixed(4)}</span></span>
+      ? <section className={`m-tendency ${historicRate.growth > 1 ? 'm-tendency--succes' : 'm-tendency--warning'}`}>
+          <h3 className="m-tendency__title">Course {converter.baseCurrency} / {converter.targetCurrency} over 30 days</h3>
+          <span className="m-tendency__current-rate">{historicRate.amount} / <span>{converter.currentRate.toFixed(4)}</span></span>
 
-              <span className="m-tendency__total-growth">
-                ({store.historicRate.growth.toFixed(4)}%)
-              </span>
-            </section>
+          <span className="m-tendency__total-growth">
+            ({historicRate.growth.toFixed(4)}%)
+          </span>
+        </section>
 
-          : <section className={`m-tendency ${store.historicRate.growth > 1 ? 'm-tendency--succes' : 'm-tendency--warning'}`}>
-              <h3 className="m-tendency__title">Course {store.startCurrency} / {store.targetCurrency} over 30 days</h3>
-              <p>{store.error ? 'Something went wrong' : 'Retrieving data'}</p>
-            </section>
-        }
-      </>
-    );
-  }
-}
+      : <section className={`m-tendency ${historicRate.growth > 1 ? 'm-tendency--succes' : 'm-tendency--warning'}`}>
+          <h3 className="m-tendency__title">Course {converter.baseCurrency} / {converter.targetCurrency} over 30 days</h3>
+          <p>{error ? 'Something went wrong' : 'Retrieving data'}</p>
+        </section>
+    }
+  </>
+);
+
+Tendency.defaultProps = {
+  historicRate: {
+    amount: 0,
+    growth: 0,
+  },
+};
 
 Tendency.propTypes = {
-  store: PropTypes.shape({
-    currentRate: PropTypes.number.isRequired,
-    error: PropTypes.bool.isRequired,
-    startCurrency: PropTypes.string.isRequired,
-    targetCurrency: PropTypes.string.isRequired,
-    historicRate: PropTypes.shape({
-      growth: PropTypes.number,
-    }),
+  historicRate: PropTypes.shape({
+    amount: PropTypes.number,
+    growth: PropTypes.number,
+  }),
+  converter: PropTypes.shape({
+    baseCurrency: PropTypes.string,
+    targetCurrency: PropTypes.string,
+  }),
+  error: PropTypes.shape({
+    bool: PropTypes.bool.isRequired,
+    message: PropTypes.string,
   }),
 };
 

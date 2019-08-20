@@ -1,34 +1,20 @@
 import 'babel-polyfill';
-import React, { Component } from 'react';
-import { inject, observer } from 'mobx-react';
-import PropTypes from 'prop-types';
+import React, { useContext, useEffect } from 'react';
+import { observer } from 'mobx-react-lite';
 
-// eslint-disable-next-line no-unused-vars
-import Style from './App.css';
+import AppStore from './store';
 import Index from './modules/index';
+import './App.css';
 
-@inject('store')
-@observer
-class App extends Component {
-  componentDidMount() {
-    const { store } = this.props;
-    store.fetchSymbols();
-    store.fetchData();
-  }
+const App = observer(() => {
+  const store = useContext(AppStore);
+  useEffect(() => {
+    store.initApp();
+  }, []);
 
-  // eslint-disable-next-line class-methods-use-this
-  render() {
-    return (
-      <Index/>
-    );
-  }
-}
-
-App.propTypes = {
-  store: PropTypes.shape({
-    fetchSymbols: PropTypes.func.isRequired,
-    fetchData: PropTypes.func.isRequired,
-  }),
-};
+  return (
+    <Index />
+  );
+});
 
 export default App;
