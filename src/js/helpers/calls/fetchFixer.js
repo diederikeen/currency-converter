@@ -21,7 +21,6 @@ function fetchFixer(uriParams, cbSucces, cbError) {
     fetch(uri, { method: 'get' })
       .then((res) => res.json())
       .then((data) => {
-        // console.log(data);
         if (!data.success) {
           cbError(data.error);
           return;

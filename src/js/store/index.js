@@ -64,14 +64,13 @@ export class AppState {
     };
   };
 
-  // fetchSymbols
   fetchSymbols = () => {
     FixerCall({
       endpoint: 'symbols',
     }, this.fetchedSymbols, this.onError);
   }
 
-  // populate symbols (currencies)
+
   fetchedSymbols = (data) => {
     this.symbols = data.symbols;
   };
